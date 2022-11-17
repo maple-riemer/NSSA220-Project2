@@ -19,3 +19,5 @@ def filter(filename):
         if line.startswith("No."):
             adding = False
             checking = True
+    
+    f.close()
