@@ -9,4 +9,3 @@ if __name__ == "__main__":
         sys.exit()
     else:
         packets = filter("data/Node1.txt")
-        print(packets[0])
