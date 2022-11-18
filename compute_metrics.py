@@ -1,17 +1,22 @@
+IP_NODE_1 = "192.168.100.1"
+
 def compute() :
 	print('called compute function in compute_metrics.py')
-	print(search("data/Node1.txt", "Echo (ping) request"))
+	print(search("data/Node1.txt", "request"))
 
-# All this does is search for a string in a file and returns how many times it is found. Not sure how to tell
-# if the given request or reply was sent or received.
+# Something slightly off here
 def search(filename, string):
 	f = open(filename, "r")
 	count = 0
-
 	for line in f:
-		line = f.readline().strip()
-		if (line.find(string) != -1):
-			count += 1
+		try:
+			line = f.readline().strip().split()
+			if (line[2] == IP_NODE_1 and line[8] == string):
+				print(line)
+				count += 1
+		except IndexError:
+			continue
 	f.close()
 	return count
 
+compute()
