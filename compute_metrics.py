@@ -1,7 +1,9 @@
 IP_NODE_1 = "192.168.100.1"
 
 def compute():
-	print(search("data/Node1.txt",IP_NODE_1))
+	countMetrics,ByteMetrics = search("data/Node1.txt",IP_NODE_1)
+	print("Data Metrics 1-4:",countMetrics,"\n","Data Metrics 5-8: ",ByteMetrics)
+
 
 def search(filename,ip):
 	#messy, inefficent. Will be organized soon.
