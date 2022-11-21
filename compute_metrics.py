@@ -1,14 +1,10 @@
 IP_NODE_1 = "192.168.100.1"
 
-def compute():
-	countMetrics,ByteMetrics = search("data/Node1.txt",IP_NODE_1)
-	print("Data Metrics 1-4:",countMetrics,"\n","Data Metrics 5-8: ",ByteMetrics)
-
-
-def search(filename,ip):
-	#messy, inefficent. Will be organized soon.
-	f = open(filename, "r")
-
+def compute(packetList,ip):
+	#packetList - list of filtered+parsed packets given from packet_parser.py
+		#format should be packet_num, time, frame, data, ttl, sequence, type
+	#ip - IP for specific Node
+	
 	ReqSentCount = 0
 	ReqRecieveCount = 0
 	RepSentCount = 0
@@ -19,35 +15,31 @@ def search(filename,ip):
 	RepSentBytes = 0 #not implemented
 	RepRecieveBytes = 0 #not implemented
 
-	for line in f:
+	for packet in packetList:
+
 		try:
-			line = line.strip().split()
-
 			#Computing Data Metrics...
-			if (line[2] == ip and line[8] == "request"):
+			#inefficeint, will re-org once all logic is down
+			if (packet[2] == ip and packet[8] == "request"):
 				ReqSentCount += 1 #data metric 1
-				ReqSentBytes += int(line[5]) #data metric 5
+				ReqSentBytes += int(packet[5]) #data metric 5
 
-			elif (line[3] == ip and line[8] == "request"):
+			elif (packet[3] == ip and packet[8] == "request"):
 				ReqRecieveCount += 1 #data metric 2
-				ReqRecieveBytes += int(line[5]) #data metric 6
+				ReqRecieveBytes += int(packet[5]) #data metric 6
 
-			elif (line[2] == ip and line[8] == "reply"):
+			elif (packet[2] == ip and packet[8] == "reply"):
 				RepSentCount += 1 #data metric 3
 				#add data metric for #7
 
-			elif (line[3] == ip and line[8] == "reply"):
+			elif (packet[3] == ip and packet[8] == "reply"):
 				RepRecieveCount += 1 #data metric 4
 				#add data metric for #8
 
 		except IndexError:
 			continue
 
-	f.close()
-
 	DataCountMetrics=[ReqSentCount,ReqRecieveCount,RepSentCount,RepRecieveCount]
 	DataByteMetrics=[ReqSentBytes,ReqRecieveBytes,RepSentBytes,RepRecieveBytes]
 
 	return DataCountMetrics,DataByteMetrics
-
-compute()
