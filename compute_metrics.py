@@ -3,8 +3,12 @@ IP_NODE_1 = "192.168.100.1"
 def compute() :
 	print('called compute function in compute_metrics.py')
 	print(search("data/Node1.txt", "request"))
+	#print(search("data/Node1.txt","reply"))
 
-# Something slightly off here
+#Something slightly off here
+#skipping lines; when told to print every line, it skips a considerable amount of them
+# this is why not everything is being counted correctly
+# thinking it has something to do with the try/except?? I have no idea... 
 def search(filename, string):
 	f = open(filename, "r")
 	count = 0
