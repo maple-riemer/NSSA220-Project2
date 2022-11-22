@@ -46,6 +46,8 @@ def read_packet(packet):
 	be = int(packet[3][8]+packet[3][9], 16)
 	le = int(packet[3][9] + packet[3][8], 16)
 	sequence = str(be) + "/" + str(le)
+	source = str(int(packet[2][10], 16)) + "." + str(int(packet[2][11], 16)) + "." + str(int(packet[2][12], 16)) + "." + str(int(packet[2][13], 16))
+	destination = str(int(packet[2][14], 16)) + "." + str(int(packet[2][15], 16)) + "." + str(int(packet[3][0], 16)) + "." + str(int(packet[3][1], 16))
 	if packet[3][2] == "08":
 		type = "request"
 	else:
@@ -54,11 +56,11 @@ def read_packet(packet):
 		for j in range(len(packet[i])):
 			frame += 1
 	data = frame - 42
-	return packet_num, time, frame, data, ttl, sequence, type
+	return packet_num, time, source, destination, frame, data, ttl, sequence, type
 
 # testing the functions and outputs for one packet
 packet = one_packet(list)
 for instance in packet:
 	print(instance)
-packet_num, time, frame, data, ttl, sequence, type = read_packet(packet)
-print(packet_num, time, frame, data, ttl, sequence, type)
+packet_num, time, source, destination, frame, data, ttl, sequence, type = read_packet(packet)
+print(packet_num, time, source, destination, frame, data, ttl, sequence, type)
