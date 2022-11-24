@@ -36,7 +36,7 @@ def one_packet(list):
 		packet[i].pop()
 		packet[i].pop(0)
 	return packet
-read_data("data/example.txt", list)
+#read_data("data/example.txt", list)
 
 def read_packet(packet):
 	packet_num = packet[0][0]
@@ -59,8 +59,8 @@ def read_packet(packet):
 	return packet_num, time, source, destination, frame, data, ttl, sequence, type
 
 # testing the functions and outputs for one packet
-packet = one_packet(list)
-for instance in packet:
-	print(instance)
-packet_num, time, source, destination, frame, data, ttl, sequence, type = read_packet(packet)
-print(packet_num, time, source, destination, frame, data, ttl, sequence, type)
+#packet = one_packet(list)
+#for instance in packet:
+	#print(instance)
+#packet_num, time, source, destination, frame, data, ttl, sequence, type = read_packet(packet)
+#print(packet_num, time, source, destination, frame, data, ttl, sequence, type)

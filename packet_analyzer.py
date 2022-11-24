@@ -8,4 +8,10 @@ if __name__ == "__main__":
         print("Usage packet_analyzer.py")
         sys.exit()
     else:
-        packets = filter("data/Node1.txt")
+        filter("data/Node1.txt")
+
+        packets=[]
+        read_data("data/Node1_filtered.txt",packets) #hard coding file name for now
+
+        packet=one_packet(packets)
+        
