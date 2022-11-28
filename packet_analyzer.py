@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
         packets=[]
         read_data("data/Node1_filtered.txt",packets) #hard coding file name for now
-
-        packet=one_packet(packets)
+        # for p in packets:
+        #     packet = one_packet(packets)
+            
         
