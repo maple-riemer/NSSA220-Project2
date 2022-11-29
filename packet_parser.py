@@ -6,17 +6,12 @@ def read_data(filename, list):
 		line = line.split()
 		try:
 			int(line[0])
-			# if line[0]
 			list.append(line)
 		except:
 			continue
 		
 	file.close()
 
-
-# def parse():
-# 	print('called parse function in packet_parser.py')
-list = []
 
 # gets a single packet from the lists of packets read and cleans out the unuseful data
 def one_packet(list):
@@ -26,7 +21,6 @@ def one_packet(list):
 		if list[i][0] == "0000" and j == 0:
 			packet.append(list[i])
 			j += 1
-			print(i)
 		elif list[i][0] != "0000":
 			packet.append(list[i])
 		else:
@@ -36,7 +30,6 @@ def one_packet(list):
 		packet[i].pop()
 		packet[i].pop(0)
 	return packet
-#read_data("data/example.txt", list)
 
 def read_packet(packet):
 	packet_num = packet[0][0]
@@ -49,18 +42,40 @@ def read_packet(packet):
 	source = str(int(packet[2][10], 16)) + "." + str(int(packet[2][11], 16)) + "." + str(int(packet[2][12], 16)) + "." + str(int(packet[2][13], 16))
 	destination = str(int(packet[2][14], 16)) + "." + str(int(packet[2][15], 16)) + "." + str(int(packet[3][0], 16)) + "." + str(int(packet[3][1], 16))
 	if packet[3][2] == "08":
-		type = "request"
+		_type = "request"
 	else:
-		type = "reply"
+		_type = "reply"
 	for i in range(1, len(packet)):
 		for j in range(len(packet[i])):
 			frame += 1
 	data = frame - 42
-	return packet_num, time, source, destination, frame, data, ttl, sequence, type
 
-# testing the functions and outputs for one packet
-#packet = one_packet(list)
-#for instance in packet:
-	#print(instance)
-#packet_num, time, source, destination, frame, data, ttl, sequence, type = read_packet(packet)
-#print(packet_num, time, source, destination, frame, data, ttl, sequence, type)
+	return [packet_num, time, source, destination, frame, data, ttl, sequence, _type]
+
+def parse_all(filteredList, parsedList):
+	while filteredList:
+		packet = one_packet(filteredList)
+		data = read_packet(packet)
+		parsedList.append(data)
+		filteredList = filteredList[len(packet):]
+	return parsedList
+
+
+if __name__ == "__main__":
+	# testing the functions and outputs for one packet
+	
+	filteredList = []
+	read_data("data/Node1_filtered.txt", filteredList)
+	# packet = one_packet(list)
+	# print(len(packet))
+	# print(len(list))
+	# for instance in packet:
+	# 	print(instance)
+	# data = read_packet(packet)
+	# print(data)
+
+
+	# creates an array of parsed packet data
+	dataList = []
+	parse_all(filteredList, dataList)
+	print(dataList)
