@@ -1,8 +1,5 @@
 IP_NODE_1 = "192.168.100.1"
 
-DataCountMetrics=[]
-DataByteMetrics=[]
-
 def computeDataMetrics(packetList,ip):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
@@ -37,12 +34,14 @@ def computeDataMetrics(packetList,ip):
 			elif (packet[3] == ip and packet[8] == "reply"):
 				RepRecieveCount += 1 #data metric 4
 				ReqRecieveData += packet[5] #data metric 8
-				
 
 	DataCountMetrics=[ReqSentCount,ReqRecieveCount,RepSentCount,RepRecieveCount]
 	DataByteMetrics=[ReqSentBytes,ReqRecieveBytes,ReqSentData,ReqRecieveData]
 
-def computeTimeMetrics(packetList,ip):
+	return DataCountMetrics,DataByteMetrics
+	
+
+def computeTimeMetrics(packetList,ip,DataCountMetrics,DataByteMetrics):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
 	#ip - IP for specific Node
@@ -79,7 +78,7 @@ def computeTimeMetrics(packetList,ip):
 			replySeq=reply[7]
 			if (replySeq==reqSeq):
 				#find RTT for single set
-				RTT=abs(replySeq-reqSeq)
+				RTT=abs(float(request[1])-float(reply[1]))
 				RTTSum += RTT
 				RTTList.append(RTT)
 	
@@ -90,12 +89,12 @@ def computeTimeMetrics(packetList,ip):
 			replySeq=reply[7]
 			if (replySeq==reqSeq):
 				#find RTT for single set
-				RTT=abs(replySeq-reqSeq)
+				RTT=abs(float(request[1])-float(reply[1]))
 				RTTSum += RTT
 				RTTList.append(RTT)
 
 	#calc RTT
-	AverageRTT= (RTTSum/len(RTTList))*1000 # x1000 to make it ms
+	AverageRTT= (RTTSum/len(RTTList))/1000 # /1000 to make it ms
 
 	#Find TBM #2
 	ThroughPut= DataByteMetrics[0]/RTTSum
@@ -105,3 +104,4 @@ def computeTimeMetrics(packetList,ip):
 
 	#Find TBM #4
 	
+	return AverageRTT,ThroughPut,GoodPut

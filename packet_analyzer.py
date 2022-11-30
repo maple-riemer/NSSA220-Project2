@@ -12,7 +12,12 @@ if __name__ == "__main__":
 
         packets=[]
         read_data("data/Node1_filtered.txt",packets) #hard coding file name for now
-        # for p in packets:
-        #     packet = one_packet(packets)
-            
         
+        dataList=[]
+        parse_all(packets,dataList)
+        print(dataList)
+
+        DataCountMetrics,DataByteMetrics=computeDataMetrics(dataList,"192.168.100.1")
+        print(DataCountMetrics,DataByteMetrics)
+        print(computeTimeMetrics(dataList,"192.168.100.1",DataCountMetrics,DataByteMetrics))
+            
