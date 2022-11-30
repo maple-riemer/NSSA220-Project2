@@ -16,7 +16,6 @@ def computeDataMetrics(packetList,ip):
 	ReqRecieveData = 0
 
 	for packet in packetList:
-	#inefficeint, will re-org once all logic is down
 
 			#Computing Data Metrics...
 			if (packet[2] == ip and packet[8] == "request"):
@@ -41,12 +40,11 @@ def computeDataMetrics(packetList,ip):
 	return DataCountMetrics,DataByteMetrics
 	
 
-def computeTimeMetrics(packetList,ip,DataCountMetrics,DataByteMetrics):
+def computeTimeMetrics(packetList,ip,DataByteMetrics):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
 	#ip - IP for specific Node
-
-	#may combine computeTimeMetrics,and data metrics functions, bc similar if statements
+	#DataByteMetrics - Given from computeDataMetrics, used to calc throughput,goodput
 
 	reqSent=[]
 	reqRecieve=[]
@@ -54,7 +52,7 @@ def computeTimeMetrics(packetList,ip,DataCountMetrics,DataByteMetrics):
 	ReplyRecieve=[]
 
 	RTTSum=0
-	RTTList=[] #can prolly delete this, and just keep a tally; is only used for average calc
+	RTTally=0
 
 	for packet in packetList:
 		
@@ -66,11 +64,12 @@ def computeTimeMetrics(packetList,ip,DataCountMetrics,DataByteMetrics):
 			ReplyRecieve.append(packet)
 
 		elif(packet[2]==ip and packet[8]=="request"): #requests i sent
-			reqRecieve.append(packet)
+			reqSent.append(packet)
 
 		elif(packet[3]==ip and packet[8]=="request"): #requests i recieved
-			reqSent.append(packet)
+			reqRecieve.append(packet)
 	
+	#used to find RTT
 	for request in reqSent:
 		#find reply in replyRecieve
 		reqSeq=request[7]
@@ -80,28 +79,35 @@ def computeTimeMetrics(packetList,ip,DataCountMetrics,DataByteMetrics):
 				#find RTT for single set
 				RTT=abs(float(request[1])-float(reply[1]))
 				RTTSum += RTT
-				RTTList.append(RTT)
-	
-	for request in reqRecieve:
-		#find reply in replySent
-		reqSeq=request[7]
-		for reply in ReplySent:
-			replySeq=reply[7]
-			if (replySeq==reqSeq):
-				#find RTT for single set
-				RTT=abs(float(request[1])-float(reply[1]))
-				RTTSum += RTT
-				RTTList.append(RTT)
+				RTTally+=1
 
 	#calc RTT
-	AverageRTT= (RTTSum/len(RTTList))/1000 # /1000 to make it ms
+	AverageRTT= (RTTSum/RTTally)*1000 # *1000 to make it ms
 
 	#Find TBM #2
 	ThroughPut= DataByteMetrics[0]/RTTSum
 
 	#Find TBM #3
-	GoodPut= DataByteMetrics[2]/RTTSum
+	GoodPut= DataByteMetrics[2]/RTTSum #throughput and goodput will be off until data metrics fixed
 
 	#Find TBM #4
+	replysum=0
+	replytally=0 
+	for request in reqRecieve:
+		for reply in ReplySent:
+			if request[7]==reply[7]: #if the sequence num is the same
+				replysum+=abs(float(request[1])-float(reply[1])) #add total time to the sum
+				replytally+=1
+	AverageReplyDelay= (replysum/replytally)*1000000 # *1mil for microseconds
+
+	#Find Hop Count
+	hopSum=0
+	tally=0
+	for reply in ReplyRecieve:
+		hopNum = (128-reply[6]) +1
+		hopSum += hopNum
+		tally+=1
+	averageHop = hopSum/tally
 	
-	return AverageRTT,ThroughPut,GoodPut
+	TimeMetricList = [AverageRTT,ThroughPut,GoodPut,AverageReplyDelay,averageHop]
+	return TimeMetricList
