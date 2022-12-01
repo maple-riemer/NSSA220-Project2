@@ -45,10 +45,8 @@ def read_packet(packet):
 		_type = "request"
 	else:
 		_type = "reply"
-	for i in range(1, len(packet)):
-		for j in range(len(packet[i])):
-			frame += 1
-	data = frame - 42
+	frame = str(int(packet[2][0] + packet[2][1], 16) + 14)
+	data = str(int(packet[2][0] + packet[2][1], 16) - 28)
 
 	return [packet_num, time, source, destination, frame, data, ttl, sequence, _type]
 
@@ -65,7 +63,7 @@ if __name__ == "__main__":
 	# testing the functions and outputs for one packet
 	
 	filteredList = []
-	read_data("data/Node1_filtered.txt", filteredList)
+	read_data("data/example.txt", filteredList)
 	# packet = one_packet(list)
 	# print(len(packet))
 	# print(len(list))
