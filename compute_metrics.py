@@ -1,5 +1,3 @@
-IP_NODE_1 = "192.168.100.1"
-
 def computeDataMetrics(packetList,ip):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
