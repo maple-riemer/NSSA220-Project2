@@ -28,14 +28,14 @@ def computeDataMetrics(packetList,ip):
 
 			elif (packet[2] == ip and packet[8] == "reply"):
 				RepSentCount += 1 #data metric 3
-				ReqSentData += packet[5] #data metric 7
+				ReqSentData += int(packet[5]) #data metric 7
 
 			elif (packet[3] == ip and packet[8] == "reply"):
 				RepRecieveCount += 1 #data metric 4
-				ReqRecieveData += packet[5] #data metric 8
+				ReqRecieveData += int(packet[5]) #data metric 8
 
 	DataCountMetrics=[ReqSentCount,ReqRecieveCount,RepSentCount,RepRecieveCount]
-	DataByteMetrics=[ReqSentBytes,ReqRecieveBytes,ReqSentData,ReqRecieveData]
+	DataByteMetrics=[ReqSentBytes,ReqRecieveBytes,ReqRecieveData,ReqSentData]
 
 	return DataCountMetrics,DataByteMetrics
 	
@@ -85,10 +85,10 @@ def computeTimeMetrics(packetList,ip,DataByteMetrics):
 	AverageRTT= (RTTSum/RTTally)*1000 # *1000 to make it ms
 
 	#Find TBM #2
-	ThroughPut= DataByteMetrics[0]/RTTSum
+	ThroughPut= (DataByteMetrics[0]/RTTSum)/1000
 
 	#Find TBM #3
-	GoodPut= DataByteMetrics[2]/RTTSum #throughput and goodput will be off until data metrics fixed
+	GoodPut= (DataByteMetrics[2]/RTTSum)/1000
 
 	#Find TBM #4
 	replysum=0
