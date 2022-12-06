@@ -1,6 +1,6 @@
+# Reads data from a file and outputs it to a list provided as an argument
 def read_data(filename, list):
 	file = open(filename, 'r')
-	line = file.readline()
 	for line in file:
 		line = line.strip()
 		line = line.split()
@@ -9,7 +9,6 @@ def read_data(filename, list):
 			list.append(line)
 		except:
 			continue
-		
 	file.close()
 
 
@@ -31,6 +30,7 @@ def one_packet(list):
 		packet[i].pop(0)
 	return packet
 
+# Gets desired data fields from a packet and returns it as an array
 def read_packet(packet):
 	packet_num = packet[0][0]
 	time = packet[0][1]
@@ -50,6 +50,7 @@ def read_packet(packet):
 
 	return [packet_num, time, source, destination, frame, data, ttl, sequence, _type]
 
+# Parses all packets in a list
 def parse_all(filteredList, parsedList):
 	while filteredList:
 		packet = one_packet(filteredList)
@@ -60,18 +61,8 @@ def parse_all(filteredList, parsedList):
 
 
 if __name__ == "__main__":
-	# testing the functions and outputs for one packet
-	
 	filteredList = []
 	read_data("data/example.txt", filteredList)
-	# packet = one_packet(list)
-	# print(len(packet))
-	# print(len(list))
-	# for instance in packet:
-	# 	print(instance)
-	# data = read_packet(packet)
-	# print(data)
-
 
 	# creates an array of parsed packet data
 	dataList = []

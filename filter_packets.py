@@ -1,11 +1,10 @@
 import re
 
-
+# Uses an existing datafile and filters it to only include ICMP Echo Requests/Replies
 def filter(filename):
     f = open(filename, "r")
     output = open(filename.replace(".txt", "_filtered.txt"), "w")
     output.write("No. Time Source Destination Protocol Length Info\n")
-    packets = []
     adding = False
     checking = False
     for line in f:

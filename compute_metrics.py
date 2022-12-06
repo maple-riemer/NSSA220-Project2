@@ -1,3 +1,4 @@
+# Compiles data-related statistics/averages/sums from the metrics of a given list of packets
 def computeDataMetrics(packetList,ip):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
@@ -37,7 +38,7 @@ def computeDataMetrics(packetList,ip):
 
 	return DataCountMetrics,DataByteMetrics
 	
-
+# Compiles time-related statistics/averages/sums from the metrics of a given list of packets
 def computeTimeMetrics(packetList,ip,DataByteMetrics):
 	#packetList - list of filtered+parsed packets given from packet_parser.py
 		#format should be packet_num, time, source, destination, frame, data, ttl, sequence, type
