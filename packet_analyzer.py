@@ -29,9 +29,14 @@ if __name__ == "__main__":
             DataCountMetrics,DataByteMetrics=computeDataMetrics(dataList,current_ip)
             TimeMetrics=computeTimeMetrics(dataList,current_ip,DataByteMetrics)
 
-            print("\033[1;3m","Node",i,"\033[0m","\n","Echo Requests Sent:",DataCountMetrics[0],"\n","Echo Requests Recieved:",DataCountMetrics[1],"\n","Echo Replies Sent:",DataCountMetrics[2],"\n","Echo Replies Recieved",DataCountMetrics[3],"\n")
-            print("Echo Request Bytes Sent:",DataByteMetrics[0],"\n","Echo Request Bytes Recieved:",DataByteMetrics[1],"\n","Echo Request Data Sent:",DataByteMetrics[2],"\n","Echo Request Data Recieved",DataByteMetrics[3],"\n")
-            print("Average RTT (ms):",round(TimeMetrics[0],2),"\n","Echo Request Throughput (kB/sec):",round(TimeMetrics[1],1),"\n","Echo Request Goodput (kB/sec):",round(TimeMetrics[2],1),"\n","Average Reply Delay (us):",round(TimeMetrics[3],2),"\n")
-            print("Average Echo Request Hop Count:",round(TimeMetrics[4],2),"\n")
+            print("Node",i,"\n","Echo Requests Sent,Echo Requests Recieved,Echo Replies Sent,Echo Replies Recieved")
+            print(DataCountMetrics[0],DataCountMetrics[1],DataCountMetrics[2],DataCountMetrics[3])
+            print("Echo Request Bytes Sent (bytes),Echo Request Data Sent (bytes)")
+            print(DataByteMetrics[0],DataByteMetrics[2])
+            print("Echo Request Bytes Recieved (bytes),Echo Request Data Recieved (bytes)")
+            print(DataByteMetrics[1],DataByteMetrics[3])
+            print("\n")
+            print("Average RTT (ms),",round(TimeMetrics[0],2),"\n","Echo Request Throughput (kB/sec),",round(TimeMetrics[1],1),"\n","Echo Request Goodput (kB/sec),",round(TimeMetrics[2],1),"\n","Average Reply Delay (us),",round(TimeMetrics[3],2))
+            print("Average Echo Request Hop Count,",round(TimeMetrics[4],2),"\n")
 
             i+=1
