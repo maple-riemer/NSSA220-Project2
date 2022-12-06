@@ -36,11 +36,11 @@ if __name__ == "__main__":
                 [],
                 ["Echo Request Bytes Recieved (bytes)", "Echo Request Data Recieved (bytes)"],
                 [DataByteMetrics[1], DataByteMetrics[3]],
-                ["Average RTT (ms),", round(TimeMetrics[0], 2)],
-                ["Echo Request Throughput (kB/sec),", round(TimeMetrics[1], 1)],
-                ["Echo Request Goodput (kB/sec),", round(TimeMetrics[2], 1)],
-                ["Average Reply Delay (us),", round(TimeMetrics[3], 2)],
-                ["Average Echo Request Hop Count,", round(TimeMetrics[4], 2)],
+                ["Average RTT (milliseconds)", round(TimeMetrics[0], 2)],
+                ["Echo Request Throughput (kB/sec)", round(TimeMetrics[1], 1)],
+                ["Echo Request Goodput (kB/sec)", round(TimeMetrics[2], 1)],
+                ["Average Reply Delay (microseconds)", round(TimeMetrics[3], 2)],
+                ["Average Echo Request Hop Count", round(TimeMetrics[4], 2)],
                 []
             ]
             for node_row in node_data:
